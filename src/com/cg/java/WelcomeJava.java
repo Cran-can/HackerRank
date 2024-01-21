@@ -1,4 +1,4 @@
-package com.cg;
+package com.cg.java;
 
 public class WelcomeJava {
 	public static void main(String[] args) {
