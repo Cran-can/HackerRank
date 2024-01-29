@@ -23,7 +23,6 @@ public class Java_Anagrams {
 		
 		Arrays.sort(a1);
 		Arrays.sort(b1);
-
 		
 		return Arrays.equals(a1, b1);
 	}
