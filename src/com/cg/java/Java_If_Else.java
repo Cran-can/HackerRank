@@ -3,6 +3,7 @@ package com.cg.java;
 import java.util.Scanner;
 
 public class Java_If_Else {
+	
 	public static void main(String[] args) {
 		Scanner scanner = new Scanner(System.in);
 		int n = scanner.nextInt();
