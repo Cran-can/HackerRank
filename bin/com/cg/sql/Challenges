@@ -1,0 +1,9 @@
+WITH CTE as ( Select h.hacker_ID as hackid, h.name as hacker_name , count(*) as total_challenges 
+FROM hackers h JOIN Challenges c on h.hacker_ID = c.hacker_id
+GROUP BY h.name, H.hacker_ID),
+CTE1 as ( SELECT hackid, hacker_name, total_challenges, COUNT(*) over (PARTITION by Total_Challenges) 
+as count FROM CTE )
+SELECT hackid, hacker_name, total_challenges 
+FROM CTE1 
+WHERE total_challenges = (Select Max(Total_challenges) FROM CTE1) or count = 1 
+ORDER BY total_challenges DESC, hackid;

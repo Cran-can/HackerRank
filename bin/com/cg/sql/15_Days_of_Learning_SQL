@@ -1,0 +1,27 @@
+WITH cte AS(
+    SELECT * FROM submissions 
+    WHERE submission_date = '2016-03-01'
+    UNION ALL
+    select s.submission_date,s.submission_id,s.hacker_id,s.score 
+    from cte a
+    JOIN submissions s
+        ON s.submission_date = DATEADD(DAY,1,a.submission_date)
+            AND a.submission_date <> '2016-03-15'
+            AND s.hacker_id = a.hacker_id   
+)
+, cte1 as (
+
+    select submission_date, count(distinct hacker_id)  as dist_hacker from cte
+    group by submission_date
+)
+, cte2 as (
+    select *, dense_rank() over(partition by submission_date order by cnt_sub_id desc,hacker_id ) as rnk from
+    (select submission_date, hacker_id, count(submission_id) as                  cnt_sub_id from submissions
+    group by submission_date, hacker_id ) t
+)
+select a.*,b.hacker_id, h.name from cte1 a
+JOIN (select submission_date, hacker_id from cte2 where rnk=1 ) b
+    ON a.submission_date = b.submission_date
+JOIN hackers h 
+    ON b.hacker_id = h.hacker_id
+ORDER BY a.submission_date;

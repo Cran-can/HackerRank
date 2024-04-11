@@ -1,0 +1,5 @@
+with recursive cte as
+(select repeat('* ',20) x union all
+ select substring(x,3) from cte where length(x)>2)
+ 
+select * from cte;

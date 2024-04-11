@@ -1,0 +1,1 @@
+select max(population)-min(population) as pop_diff from city;

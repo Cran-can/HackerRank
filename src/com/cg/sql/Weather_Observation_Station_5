@@ -1,0 +1,9 @@
+SELECT city, length(city) 
+FROM station 
+WHERE length(city) 
+IN (SELECT MIN(length(city)) 
+FROM station) ORDER BY city LIMIT 1; 
+SELECT city, length(city) 
+FROM station 
+WHERE length(city) IN (SELECT MAX(length(city)) FROM station) 
+ORDER BY city LIMIT 1;

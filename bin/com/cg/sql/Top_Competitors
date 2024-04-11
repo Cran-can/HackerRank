@@ -1,0 +1,21 @@
+SELECT hacker_id, name 
+FROM (
+    SELECT tmp1.hacker_id, tmp1.name, COUNT(*) AS cnt 
+    FROM (
+        SELECT tmp.hacker_id, tmp.name, tmp.challenge_id, tmp.score 
+        FROM (
+            SELECT s.hacker_id, h.name, s.challenge_id, s.score 
+            FROM submissions s 
+            JOIN hackers h ON s.hacker_id = h.hacker_id
+        ) tmp 
+        LEFT JOIN (
+            SELECT c.challenge_id, c.difficulty_level, d.score 
+            FROM challenges c 
+            JOIN difficulty d ON c.difficulty_level = d.difficulty_level
+        ) asf ON tmp.challenge_id = asf.challenge_id AND tmp.score = asf.score 
+        WHERE asf.challenge_id IS NOT NULL
+    ) tmp1 
+    GROUP BY tmp1.hacker_id, tmp1.name 
+    HAVING cnt > 1 
+    ORDER BY cnt DESC, hacker_id
+) tmp2;

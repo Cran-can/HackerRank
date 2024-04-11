@@ -1,0 +1,19 @@
+WITH RECURSIVE nums AS (
+    SELECT 2 AS n
+    UNION ALL
+    SELECT n + 1
+    FROM nums
+    WHERE n < 1000
+),
+prime_nums AS (
+    SELECT a.n
+    FROM nums a
+    WHERE NOT EXISTS (
+        SELECT *
+        FROM nums b
+        WHERE a.n % b.n = 0 AND a.n <> b.n
+    )
+)
+
+SELECT GROUP_CONCAT(n SEPARATOR '&') 
+FROM prime_nums;
